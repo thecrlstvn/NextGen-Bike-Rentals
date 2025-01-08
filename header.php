@@ -1,7 +1,10 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+session_start();
+if (!isset($_SESSION['admin'])) {
+    header("Location: index.php");  // Redirect to login if not logged in
+    exit();
 }
+include('../functions/myfunctions.php');
 ?>
 
 <!DOCTYPE html>
@@ -15,272 +18,386 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="preconnect" href="//v1.fontapi.ir">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-brands/css/uicons-brands.css'>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet">
-    <link href="assets/css/owl.carousel.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Then Bootstrap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Then your custom script -->
+    <script src="assets/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=Ab9thVtSfSPe4Fc8gzR_5JI3ItQoqgP-V7ej6DbquvE7d9CYRsrpnnoruExBWRPrz9pCJ9tSFP9Tyb7o&buyer-country=PH&currency=PHP&components=buttons&enable-funding=venmo"data-sdk-integration-source="developer-studio"></script>
-
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-    <title>Welcome to NextGen</title>
-    <link rel="icon" href="assets/img/favicon-user.ico" type="image/x-icon">
-
-    <!----Alertify JS-----> 
+       <!----Alertify JS-----> 
     <link href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" rel="stylesheet"/>
     <link href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" rel="stylesheet"/>
 
-    <style> 
-        .owl-carousel .item {
-            padding: 15px; /* Space around each card */
-            box-sizing: border-box; /* Include padding in the element's total width and height */
-        }
-        .card {
-            margin: 0 auto; /* Center the card within its container */
-            border: 1px solid #ddd; /* Optional: Add a border to visualize the card area */
-        }
-        .btn-custom {
-            background-color: #005F15;
-            color: white;
-        }
+    <!--ALERTIFY JS-->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <title>NextGen AOR</title>
+    <link rel="icon" href="admin-assets/img/favicon-admin.ico" type="image/x-icon">
 
-        .bg-light-green {
-            background-color: #E0F9DE;
-        }
-        .bg-dark-gray {
-            background-color: #282828;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 1365px;
-            height: 434px;
-            margin: 0 auto;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        .custom-img {
-            max-width: 80%; /* Adjust based on your preference */
-            max-height: 100%;
-            object-fit: contain;
-        }
-        .custom-img-developers {
-            max-width: 80%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-    .logo-text-container {
-    display: inline-flex; /* Align logo and text horizontally */
-    align-items: center; /* Vertically center items */
-    padding: 8px 20px; /* Increased padding for a larger container */
-    border: 1px solid darkgrey; /* Black border around the container */
-    border-radius: 8px; /* Rounded corners */
-  }
-
-  .menu-icon {
-    width: 25px; /* Larger icon size */
-    height: 25px;
-    cursor: pointer;
-    margin-right: 15px; /* Increased space between icon and text */
-    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth hover animation */
-  }
-
-  .menu-icon:hover {
-    transform: scale(1.1); /* Slightly enlarge the icon on hover */
-    opacity: 0.8; /* Slight opacity change on hover */
-  }
-
-  .nav-text {
-    vertical-align: middle;
-    color: black; /* Ensure text is visible */
-    font-size: 20px; /* Increase font size of the text */
-    font-weight: normal; /* Optional: Make the text bold for better visibility */
-  }
-
-  /* Dropdown menu */
-  .dropdown-menu {
-    background-color: white; /* or any contrasting color */
-    color: #fff;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.4s ease; /* Smooth fade-in for dropdown */
-  }
-
-  .dropdown-show {
-    display: block;
-    opacity: 1;
-  }
-
-  .btn-custom {
+    <style>
+      * {
+  font-family: 'Aloevera-SemiBold', sans-serif;
+  font-weight: normal;
+}
+  /* Sidebar container */
+  #sidebar {
     background-color: #00831D;
-    color: #fff;
-    border-radius: 20px;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    z-index: 1000;
+  }
+
+  /* Main content margin */
+  .main-content {
+    margin-left: 250px;
+    padding: 20px;
+  }
+
+  /* Nav link styling */
+  .nav-link {
+    color: white;
+  }
+
+  /* Active state */
+  .nav-link.active {
+    background-color: white; /* Background color for active state */
+    color: #00831D; /* Text color for active state */
+    border-radius: 5px; /* Optional: add rounded corners to the active link */
+  }
+
+  /* Accordion button */
+  .accordion-button {
+    color: white;
+    background-color: #00831D;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    text-decoration: none;
   }
-  
-  .btn-custom:hover {
-    background-color: #006d14; /* Slightly darker shade for hover effect */
+
+  /* Accordion button when expanded */
+  .accordion-button:not(.collapsed) {
+    color: white;
+    background-color: #005F15;
   }
-  
-    .password-container {
-      position: relative;
+
+  /* Accordion body background */
+  .accordion-body {
+    background-color: #274e13;
+  }
+
+  #sidebar a {
+  color: white;
+}
+
+#sidebar a:hover {
+  color: #cccccc; /* Optional: Hover state color */
+}
+
+#sidebar a:focus, #sidebar a:active {
+  color: white;
+  text-decoration: none; /* Remove underline on click */
+}
+
+.sidebar-logo {
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+  }
+
+  .nav-icon {
+    width: 24px; /* Adjust the width as needed */
+    height: 24px; /* Adjust the height as needed */
+  }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px; /* Space between header and card */
     }
-    .password-toggle {
-      position: absolute;
-      right: 10px;
-      top: 105px; 
-      transform: translateY(-50%);
-      cursor: pointer;
-      width: 30px; /* Adjust size as needed */
-      height: 30px; /* Adjust size as needed */
+    .header .logo {
+      margin-right: 15px; /* Space between logo and text */
     }
-    .forgot-password {
-      color: #606060;
-      text-decoration: none;
-      font-size: 14px; /* Adjust font size as needed */
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 10px; /* Space between the password input and link */
+    .header .title {
+      font-size: 1.5rem; /* Adjust font size as needed */
+      font-weight: bold; /* Makes the text bold */
     }
-        .bg-custom {
-            background-color: #005F15;
-        }
-        .card-custom {
-            border-radius: 20px;
-            width: 100%;
-            max-width: 370px;
-            height: auto;
-            margin: auto;
-        }
-        .card-header img {
-            width: 60%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        .checkbox-label {
-            color: green;
-            font-size: 14px;
-        }
-        .checkbox-label a {
-            color: green;
-            text-decoration: underline;
-        }
-        .image-upload {
-            position: relative;
+    .card {
+      border: none; /* Remove default card border */
+      border-radius: 10px; /* Rounds the corners of the card */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds a subtle shadow */
+    }
+    .card-header {
+      background-color: #00831D; /* Your preferred color */
+      color: white; /* White text color for contrast */
+      padding: 15px 20px; /* Adds padding inside the header */
+      border-bottom: 1px solid #ddd; /* Subtle bottom border */
+      border-radius: 10px 10px 0 0; /* Rounds the top corners */
+      font-size: 1.25rem; /* Increases the font size */
+      font-weight: bold; /* Makes the text bold */
+    }
+    .form-control {
+      border-radius: 5px; /* Rounds the corners of the input fields */
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); /* Adds a subtle inner shadow */
+    }
+    .img-preview {
+      max-width: 150px; /* Adjusts the image preview size */
+      height: auto;
+      border: 1px solid #ddd; /* Adds a border around the preview */
+      border-radius: 5px; /* Rounds the corners of the preview */
+      padding: 5px; /* Adds padding inside the border */
+    }
+    .btn-primary {
+      background-color: #00831D; /* Matches your preferred color */
+      border-color: #00831D; /* Matches the button border color */
+      border-radius: 5px; /* Rounds the corners of the button */
+      font-size: 1rem; /* Adjusts the font size of the button */
+      padding: 10px 20px; /* Adds padding inside the button */
+    }
+    .btn-primary:hover {
+      background-color: #006b1f; /* Darkens the button color on hover */
+      border-color: #006b1f; /* Darkens the button border color on hover */
+    }
+    .form-label {
+      font-weight: bold; /* Makes label text bold */
+    }
+    .form-group {
+      margin-bottom: 1rem; /* Reduces spacing between form groups */
+    }
+    .form-check {
+    display: flex;
+    align-items: center;
+    }
+
+    .form-check-input {
+      margin-right: 10px; /* Adjust spacing between checkbox and label */
+    }
+
+    .form-check-label {
+      margin-bottom: 0; /* Remove bottom margin for better alignment */
+    }
+
+    /* Larger badges */
+    .badge {
+      font-size: 1rem; /* Slightly smaller font size */
+      padding: 0.35rem 0.6rem; /* Slightly reduced padding */
+    }
+
+    /* Improved button styles */
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      font-size: 0.875rem; /* Smaller font size */
+      padding: 0.475rem 0.75rem; /* Adjusted padding */
+      border-radius: 0.25rem; /* Slightly rounded corners */
+      transition: background-color 0.2s, border-color 0.2s; /* Smooth transition */
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      font-size: 0.875rem; /* Smaller font size */
+      padding: 0.475rem 0.75rem; /* Adjusted padding */
+      border-radius: 0.25rem; /* Slightly rounded corners */
+      transition: background-color 0.2s, border-color 0.2s; /* Smooth transition */
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+
+    /* Adjust table styling */
+    .table {
+      font-size: 0.875rem; /* Slightly smaller font size */
+    }
+
+    .table td, .table th {
+      padding: 0.5rem; /* Reduced padding */
+    }
+
+    .table img {
+      max-width: 80px; /* Smaller image size */
+      max-height: 80px; /* Smaller image size */
+    }
+
+  .back-button {
+        display: inline-block;
+        margin-bottom: 15px;
+        color: #005F15;
+        text-decoration: none;
+      }
+      .back-button:hover {
+        text-decoration: underline;
+      }
+      .card-header {
+        background-color: #005F15;
+        color: white;
+      }
+      .card-body {
+        padding: 20px;
+      }
+      .form-control {
+        border-radius: 0.25rem;
+      }
+      .form-control:focus {
+        box-shadow: none;
+        border-color: #005F15;
+      }
+      .form-check-input {
+        margin-right: 10px;
+      }
+
+      .dashboard-card {
             margin-bottom: 20px;
-            text-align: center;
-        }
-        .image-upload input[type="file"] {
-            display: none;
-        }
-        .avatar-container {
-            position: relative;
-            display: inline-block;
-        }
-        .avatar-container img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #00791B;
-        }
-        .avatar-container label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            padding: 10px;
-            cursor: pointer;
-            color: white;
-            font-size: 1.2rem; /* Adjust icon size */
             display: flex;
-            justify-content: center;
             align-items: center;
-            width: 100px; /* Match the avatar size */
-            height: 100px; /* Match the avatar size */
+            background-color: #f8f9fa; /* Light background for uniformity */
+            border: 1px solid #dee2e6; /* Light border for distinction */
+            border-radius: 0.375rem; /* Rounded corners */
         }
-        .avatar-container label::before {
-            font-weight: 900; /* Adjust icon weight */
-            color: white;
-            font-size: 24px;
+        .card-logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 20px;
         }
-        .avatar-container span {
-            display: block;
+        .dashboard-card-body {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+        }
+        .dashboard-card-content {
+            text-align: left;
+        }
+        .dashboard-card-content h3 {
+            margin: 0;
+            font-size: 2rem; /* Larger font size for emphasis */
+        }
+        .dashboard-card-description {
             margin-top: 10px;
-            color: #00791B;
+            color: #6c757d; /* Darker color for description text */
+            font-size: 1rem;
         }
-
-        .profile-img {
-        border: 2px solid #00791B; /* Optional: Border color */
-        background-color: #f0f0f0; /* Optional: Background color for the image */
+        .calendar {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .fc-daygrid-event {
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+    }
+    .fc-toolbar-title {
+      font-size: 1.5rem;
+      color: #005F15;
     }
 
-        .custom-profile-img {
-            width: 150px; /* Adjust size as needed */
-            height: 150px; /* Adjust size as needed */
-            object-fit: cover;
-            border: 2px solid #00831D; /* Green border */
-            border-radius: 50%; /* Optional: for circular image */
-        }
-        .mt-3 {
-            margin-top: 1rem; /* Spacing between image and button */
-        }
-        .custom-vertical-line {
-            border-left: 1px solid #dee2e6;
-            height: 100%;
-            margin: 0 20px;
-        }
-        .custom-section-title {
-            margin-bottom: 20px;
-        }
-        .custom-delete-account-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-        }
-        .custom-delete-account-btn:hover {
-            background-color: #c82333;
-        }
-        .custom-form-container {
-            padding: 20px;
-        }
-        
-        .dropdown-item img {
-            width: 20px; /* Adjust size of the logo */
-            height: auto; /* Keep aspect ratio */
-            margin-right: 8px; /* Space between logo and text */
-        }
-        
-        .custom-alert {
-        width: 100%; /* You can adjust this width */
-        padding: 5px; /* Reduce padding */
-        font-size: 14px; /* Adjust font size */
-        margin-bottom: 5px; /* Control space between alerts */
+    .text-warning {
+    color: #ffc107 !important;
+}
+
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: black;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+        canvas {
+            width: 100% !important;  /* Force canvas to be 100% width */
+            height: auto !important;  /* Maintain aspect ratio */
         }
 
-        #termsContent {
-        max-height: 400px; /* Adjust this to suit your design */
-        overflow-y: auto;
-    }
-    </style>
+        .splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00831D; /* Splash background color */
+    z-index: 1000;
+}
 
-  </head>
-  <body>
-    <?php include('navbar.php'); ?>
+.splash-logo {
+    width: 150px;
+    height: auto;
+    animation: fade-in 1.5s ease-in-out;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.dropdown-menu-dark {
+    background-color: #000000; /* Explicitly set background to black */
+}
+
+.dropdown-item {
+    color: #ffffff; /* White text color for dropdown items */
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Optional: Light hover effect */
+}
+.badge-confirmed {
+    background-color: darkgreen;
+    color: white;
+}
+
+.badge-returned {
+    background-color: gold;
+    color: black;
+}
+
+.badge-pending {
+    background-color: darkred;
+    color: white;
+}
+
+</style>
+
+</head>
+<body>
+  <?php include('sidebar.php'); ?>

@@ -1,13 +1,7 @@
 <?php
 session_start();
-
-if(isset($_SESSION['auth']))
-{
-    unset($_SESSION['auth']);
-    unset($_SESSION['auth_user']);
-    $_SESSION['message'] = "Logged Out Successfully";
-}
-
-header('Location: index.php')
-
+session_unset();  // Remove all session variables
+session_destroy();  // Destroy the session
+header("Location: index.php");  // Redirect to login page
+exit();
 ?>

@@ -1,66 +1,58 @@
 <?php
-session_start();
+session_start(); // Start the session
 
-// Redirect to index.php if user is already logged in
-if (isset($_SESSION['auth'])) {
-    $_SESSION['message'] = "You are already logged in.";
-    header('Location: index.php');
-    exit();
-}
+include('../functions/myfunctions.php'); // Include your database connection file
 
-// Include header.php which also starts the session
-include('includes/header.php');
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = trim($_POST['email']); // Trim whitespace
+    $password = $_POST['password'];
 
-?>
+    // Validate email and password inputs
+    if (empty($email) || empty($password)) {
+        $error = "Email and Password are required!";
+        header("Location: index.php?error=" . urlencode($error));
+        exit();
+    }
 
-<div class="py-5" style="background-color: #005F15;">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-6 col-md-8 col-sm-10"> <!-- Adjusted the column size for responsiveness -->
-        <?php 
-        // Display session messages
-        if (isset($_SESSION['message'])) { 
-          ?>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <?= $_SESSION['message']; ?>.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          <?php
-          unset($_SESSION['message']);
+    // Prepare query to check if the admin exists
+    $query = "SELECT * FROM adminlogin WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    
+    if ($stmt === false) {
+        die("Error preparing statement: " . $conn->error);
+    }
+
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $admin = $result->fetch_assoc();
+
+        // Verify the password
+        if (password_verify($password, $admin['password'])) {
+            // Clear any existing sessions
+            session_unset(); // Clear all session variables
+            session_destroy(); // Destroy the previous session
+            session_start(); // Start a new session
+            
+            // Set session with admin details
+            $_SESSION['admin'] = $admin['admin_name'];  // Store admin name in session
+            $_SESSION['admin_id'] = $admin['id'];        // Store admin ID in session
+
+            header("Location: ./dashboard.php"); // Redirect to the admin dashboard
+            exit();
+        } else {
+            // Handle incorrect password
+            $error = "Invalid email or password!";
+            header("Location: index.php?error=" . urlencode($error));
+            exit();
         }
-        ?>
-        <div class="card" style="border-radius: 20px;">
-          <div class="card-header text-center">
-            <img src="assets/images/login-side.png" alt="Header Image" class="img-fluid" style="max-width: 70%; margin-top: 5px; margin-bottom: 5px;">
-            <h4 style="font-weight: 900; margin-top: 10px;">Login with <span style="color: #00791B;">account</span></h4>
-          </div>
-          <div class="card-body">
-            <form action="functions/authcode.php" method="POST">
-              <div class="form-floating mb-3">
-                <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="name@example.com" required style="height: 50px;">
-                <label for="exampleInputEmail1">Email address</label>
-              </div>
-
-              <div class="form-floating mb-3 position-relative">
-                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required style="height: 50px;">
-                <label for="exampleInputPassword1">Password</label>
-                <img id="password-toggle" class="password-toggle" src="assets/img/close-eye.png" alt="Toggle Password" onclick="togglePassword()" style="position: absolute; right: 15px; top: 30px; transform: translateY(-50%); cursor: pointer;">
-                <div class="text-end mt-2">
-                  <a href="forgot-password.php" style="color: #606060; text-decoration: none;">Forgot Password?</a>
-                </div>
-              </div>
-
-                  <div class="form-group text-center">
-                <div class="g-recaptcha" data-sitekey="6Leb_GcqAAAAAKtVd46lWff_LWftZc5Yibm6dFE_"></div>
-            </div>
-
-              <button type="submit" name="login_btn" class="btn btn-block" style="background-color: #00831D; color: white; width: 100%; height: 60px; font-size: 17px;">LOGIN</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<?php include('includes/footer.php'); ?>
+    } else {
+        // Handle case where email is not found
+        $error = "Invalid email or password!";
+        header("Location: index.php?error=" . urlencode($error));
+        exit();
+    }
+}
+?>

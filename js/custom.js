@@ -1,122 +1,73 @@
 $(document).ready(function () {
-    
-    $('.increment-btn').click(function (e) { 
+
+    $(document).on('click', '.delete_product_btn', function (e) {
         e.preventDefault();
-        
-        var qty = $(this).closest('.product_data').find('.input-qty').val();
-        
-        var value = parseInt(qty, 10);
-        value = isNaN(value) ? 0 : value;
-        if (value < 10) {
-            value++;
-            $(this).closest('.product_data').find('.input-qty').val(value);
-        }
 
+        var id = $(this).val();
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        method: "POST",
+                        url: "code.php",
+                        data: {
+                            'bikeid': id, // Fix: Use 'product_id' instead of 'category_id'
+                            'delete_product_btn': true
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            if (response == 200) 
+                            {
+                                swal("Success!", "Bike deleted successfully", "success");
+                                $("#products_table").load(location.href + " #products_table");
+                            } 
+                            else if (response == 500) {
+                                swal("Error!", "Something went wrong", "error");
+                            }
+                        }
+                    });
+                }
+            });
     });
 
-    $('.decrement-btn').click(function (e) { 
+    $(document).on('click', '.delete_category_btn', function (e) {
         e.preventDefault();
-        
-        var qty = $(this).closest('.product_data').find('.input-qty').val();
-        
-        var value = parseInt(qty, 10);
-        value = isNaN(value) ? 0 : value;
-        if (value > 1) {
-            value--;
-            $(this).closest('.product_data').find('.input-qty').val(value);
-        }
-    });
-    
-    $('.addToCartBtn').click(function (e) {
-        e.preventDefault();
-    
-        var qty = $(this).closest('.product_data').find('.input-qty').val();
-        var prod_id =$(this).val();
-    
-        $.ajax({
-            type: "POST",
-            url: "functions/handlecart.php",
-            data: {
-                "prod_id": prod_id,
-                "prod_qty": qty,
-                "scope": "add"
-            },
-            success: function (response) {
-                console.log(response); // Log the entire response
-                if (response == 201) {
-                    alertify.success("Product Added to Cart");
-                } else if (response == 401) {
-                    alertify.error("Log in to Continue");
-                } else if (response == 409) {
-                    alertify.error("Already in cart");
-                } else if (response == 500) {
-                    alertify.error("Something went wrong");
-                }
-            }
-        });
-    });
-    
-    $(document).on('click', '.updateQty', function () {
-        var button = $(this); // Added this line to declare 'button'
-        var prodId = button.closest('.col-md-3').find('.prodId').val();
-        var inputQty = button.closest('.input-group').find('.input-qty');
-        var currentQty = parseInt(inputQty.val(), 10);
-        
-        // Ensure the quantity is a positive integer
-        var incrementAmount = button.hasClass('increment-btn') ? 1 : -1;
-        var newQty = Math.max(1, currentQty + incrementAmount);
 
+        var id = $(this).val();
 
-        
-        // Update the input field with the new quantity
-        inputQty.val(newQty);
-        
-        // Make an AJAX request to update the quantity on the server
-        $.ajax({
-            type: "POST",
-            url: "functions/handlecart.php",
-            data: {
-                "prod_id": prodId,
-                "prod_qty": newQty,
-                "scope": "update"
-            },
-            success: function (response) {
-                if (response == 200) {
-                    // Quantity updated successfully
-                    console.log("Quantity updated successfully");
-                } else {
-                    // Handle other cases if needed
-                    console.log("Failed to update quantity");
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        method: "POST",
+                        url: "code.php",
+                        data: {
+                            'category_id': id,
+                            'delete_category_btn': true
+                        },
+                        success: function (response) {
+                            if (response == 200) {
+                                swal("Success!", "Category deleted successfully", "success");
+                                $("#category_table").load(location.href + " #category_table");
+                            } else if (response == 500) {
+                                swal("Error!", "Something went wrong", "error");
+                            }
+                        }
+                    });
                 }
-            }
-        });
-    });
-
-    $(document).on('click', '.deleteToCartBtn', function () {
-        // Retrieve the value of the clicked element (presumably a cart item ID)
-        var cart_id = $(this).val();
-    
-        // Make an AJAX request to the server
-        $.ajax({
-            type: "POST",
-            url: "functions/handlecart.php",
-            data: {
-                "cart_id": cart_id,
-                "scope": "delete"
-            },
-            success: function (response) {
-                // Handle the server's response
-                if (response == "200") {
-                    // If the response is "200," show a success message and refresh the cart
-                    alertify.success("Item Removed Successfully");
-                    $('#mycart').load(location.href + "#mycart")
-                } else {
-                    // If the response is not "200," show an error message
-                    alertify.error(response);
-                }
-            }
-        });
+            });
     });
 });
-
-

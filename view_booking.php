@@ -1,117 +1,156 @@
-<?php
-ob_start(); // Start output buffering
-session_start();
+<?php 
 include('includes/header.php');
-include('functions/userfunctions.php');
 
-// Enable error reporting
+// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Check if the user is logged in
-if (!isset($_SESSION['auth_user']['user_id'])) {
-    header('Location: login.php'); // Redirect if user is not logged in
+// Check if booking_id is set in the URL
+if (isset($_GET['booking_id'])) {
+    $booking_id = intval($_GET['booking_id']); // Get booking ID from URL and sanitize
+
+    // Prepare SQL query to fetch booking details
+    $sql = "SELECT 
+                b.booking_id, 
+                b.customer_name, 
+                bi.bike_name, 
+                bi.image,   -- Include bike_image from bikes table
+                bc.name AS category_name,
+                b.start_date, 
+                b.start_time, 
+                b.end_date, 
+                b.end_time, 
+                b.quantity, 
+                b.total_amount, 
+                p.downpayment_amount, 
+                p.remaining_amount, 
+                p.payment_status, 
+                b.qr_code_status, 
+                b.booking_source 
+            FROM bookings b
+        JOIN 
+            bikes bi ON b.bikeid = bi.bikeid
+        JOIN 
+            categories bc ON bi.category_id = bc.id
+        JOIN 
+            payments p ON b.booking_id = p.booking_id  -- Join with payments table
+        WHERE 
+            b.booking_id = ?";
+    
+    // Prepare statement
+    $stmt = $conn->prepare($sql);
+
+    // Check if statement preparation was successful
+    if ($stmt === false) {
+        die("Error preparing statement: " . $conn->error); // Output error message
+    }
+
+    // Bind the booking ID parameter
+    $stmt->bind_param("i", $booking_id); 
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if booking exists
+    if ($result->num_rows > 0) {
+        $booking = $result->fetch_assoc(); // Fetch booking details
+    } else {
+        echo "<div class='alert alert-danger'>Booking not found.</div>";
+        exit();
+    }
+} else {
+    echo "<div class='alert alert-danger'>Invalid booking ID.</div>";
     exit();
 }
-
-// Get the booking ID from the URL
-$bookingId = isset($_GET['id']) ? intval($_GET['id']) : 0; // Get booking ID and convert to integer
-
-if ($bookingId <= 0) {
-    die("Invalid booking ID.");
-}
-
-// Fetch booking details from the database
-$bookingDetails = getBookingDetails($bookingId); // Make sure this function is defined in userfunctions.php
-
-ob_end_flush(); // Flush the output buffer
 ?>
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Booking Details</h2>
+<div class="main-content">
+  <div class="container mt-2">
+    <div class="header">
+      <div class="logo">
+        <img src="assets/img/nextgen.png" alt="Logo" style="height: 27px;">
+      </div>
+      <div class="title">
+        View Booking Details
+      </div>
+    </div>
 
-    <?php if ($bookingDetails): ?>
-        <div class="card shadow-lg mb-5">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <?php if (!empty($bookingDetails['image'])): ?>
-                        <img src="<?= htmlspecialchars($bookingDetails['image']); ?>" class="card-img-top" alt="Product image">
-                    <?php else: ?>
-                        <img src="assets/images/placeholder.png" class="img-fluid rounded-start" alt="No image available">
-                    <?php endif; ?>
+    <div class="container mt-5">
+      <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+          <h3 class="mb-0 text-center">Booking Receipt</h3>
+        </div>
+        <div class="card-body">
+            <div class="text-center mb-4">
+                <img src="assets/img/login-side.png" alt="Small Logo" style="height: 50px;">
+                <h4 class="mt-2">NextGen Bike Rentals</h4>
+                <p>Tel No: 415-1111 | 924-2684</p>
+                <p>Follow us on: 
+                    <a href="https://facebook.com/nextgen" target="_blank">
+                        <img src="assets/img/facebook.png" alt="Facebook" style="height: 25px; margin: 0 5px;">
+                    </a>
+                    <a href="https://instagram.com/nextgen" target="_blank">
+                        <img src="assets/img/instagram.png" alt="Instagram" style="height: 25px; margin: 0 5px;">
+                    </a>
+                    <a href="https://twitter.com/nextgen" target="_blank">
+                        <img src="assets/img/twitter.png" alt="Twitter" style="height: 25px; margin: 0 5px;">
+                    </a>
+                </p>
+            </div>
+            <div class="receipt">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Customer Information</h5>
+                        <hr>
+                        <p><strong>Name:</strong> <?php echo htmlspecialchars($booking['customer_name']); ?></p>
+                        <p><strong>Bike Name:</strong> <?php echo htmlspecialchars($booking['bike_name']); ?></p>
+                        <p><strong>Category:</strong> <?php echo htmlspecialchars($booking['category_name']); ?></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <img src="<?php echo htmlspecialchars($booking['image']); ?>" alt="Bike Image" style="max-width: 150px; height: auto;" class="img-fluid rounded">
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h4 class="card-title text-primary">Bike Rent Details</h4>
-                        <hr>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <p><strong>Bike Name:</strong> <?php echo htmlspecialchars($bookingDetails['bike_name'] ?? 'N/A'); ?></p>
-                                <p><strong>Bike Brand:</strong> <?php echo htmlspecialchars($bookingDetails['bike_brand'] ?? 'N/A'); ?></p>
-                                <p><strong>Quantity:</strong> <?php echo htmlspecialchars($bookingDetails['quantity'] ?? 'N/A'); ?></p>
-                                <p><strong>Rate Type:</strong> <?php echo htmlspecialchars($bookingDetails['rate_type'] ?? 'N/A'); ?></p>
-                                <p><strong>Booking Date:</strong> <?php echo date('Y-m-d', strtotime($bookingDetails['booking_date'] ?? '')); ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <?php if (strtolower($bookingDetails['rate_type'] ?? '') != 'daily'): ?>
-                                    <p><strong>Pickup Time:</strong> <?php echo htmlspecialchars($bookingDetails['pickup_time'] ?? 'N/A'); ?></p>
-                                    <p><strong>Return Time:</strong> <?php echo htmlspecialchars($bookingDetails['return_time'] ?? 'N/A'); ?></p>
-                                <?php endif; ?>
-                                <p><strong>Customer Name:</strong> <?php echo htmlspecialchars($bookingDetails['customer_name'] ?? 'N/A'); ?></p>
-                                <p><strong>Customer Email:</strong> <?php echo htmlspecialchars($bookingDetails['customer_email'] ?? 'N/A'); ?></p>
-                                <!-- Add Status Field with Badge -->
-                                <p><strong>Status:</strong> 
-                                    <span class="badge <?php echo getStatusClass($bookingDetails['status']); ?>">
-                                        <?php echo ucfirst(htmlspecialchars($bookingDetails['status'] ?? 'N/A')); ?>
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
 
-                        <h4 class="card-title text-success">Payment Details</h4>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>Booking Duration</h5>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Payment Method:</strong> <?php echo htmlspecialchars($bookingDetails['payment_method'] ?? 'N/A'); ?></p>
-                                <p><strong>Total Amount:</strong> <?php echo htmlspecialchars($bookingDetails['total_amount'] ?? 'N/A'); ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Downpayment:</strong> <?php echo htmlspecialchars($bookingDetails['downpayment_amount'] ?? 'N/A'); ?></p>
-                                <p><strong>Remaining Amount:</strong> <?php echo htmlspecialchars($bookingDetails['remaining_amount'] ?? 'N/A'); ?></p>
-                                <p><strong>Payment Status:</strong> 
-                                    <span class="badge <?php echo getStatusClass($bookingDetails['payment_status']); ?>">
-                                        <?php echo htmlspecialchars($bookingDetails['payment_status'] ?? 'N/A'); ?>
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
+                        <p><strong>Start:</strong> <?php echo date('F j, Y, g:i A', strtotime($booking['start_date'] . ' ' . $booking['start_time'])); ?></p>
+                        <p><strong>End:</strong> <?php echo date('F j, Y, g:i A', strtotime($booking['end_date'] . ' ' . $booking['end_time'])); ?></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h5>Payment Details</h5>
+                        <hr>
+                        <p><strong>Quantity:</strong> <?php echo htmlspecialchars($booking['quantity']); ?></p>
+                        <p><strong>Total Amount:</strong> <?php echo htmlspecialchars($booking['total_amount']); ?></p>
+                        <p><strong>Downpayment:</strong> <?php echo htmlspecialchars($booking['downpayment_amount']); ?></p>
+                        <p><strong>Remaining Amount:</strong> <?php echo htmlspecialchars($booking['remaining_amount']); ?></p>
+                        <p><strong>Payment Status:</strong> <?php echo htmlspecialchars($booking['payment_status']); ?></p>
+                    </div>
+                </div>
 
-                        <a href="mybookings.php" class="btn btn-primary btn-block mt-4">Back to My Bookings</a>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>QR Code Status</h5>
+                        <hr>
+                        <span class="badge <?php echo ($booking['qr_code_status'] == 'Active') ? 'bg-success' : 'bg-danger'; ?>">
+                            <?php echo htmlspecialchars($booking['qr_code_status']); ?>
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h5>Booking Source</h5>
+                        <hr>
+                        <span class="badge <?php echo ($booking['booking_source'] == 'Online') ? 'bg-info' : 'bg-secondary'; ?>">
+                            <?php echo htmlspecialchars($booking['booking_source']); ?>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
-    <?php else: ?>
-        <div class="alert alert-danger text-center mt-5">No booking details found for this ID.</div>
-    <?php endif; ?>
+        <div class="card-footer text-right">
+            <a href="allbookings.php" class="btn btn-secondary">Back to Bookings</a>
+        </div>
+    </div>
+  </div>
 </div>
 
 <?php include('includes/footer.php'); ?>
-
-<?php
-// Function to determine the status class for styling with Bootstrap badge classes
-function getStatusClass($status) {
-    switch (strtolower($status ?? '')) {
-        case 'active':
-            return 'badge-success'; // Green for active
-        case 'past':
-            return 'badge-secondary'; // Grey for past
-        case 'paid':
-            return 'badge-success'; // Green for paid
-        case 'unpaid':
-            return 'badge-warning'; // Yellow for unpaid
-        default:
-            return 'badge-light'; // Default muted badge
-    }
-}
-?>

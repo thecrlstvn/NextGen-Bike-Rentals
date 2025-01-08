@@ -1,22 +1,30 @@
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
     
-    <!----ALERTIFY JS---->
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!--ALERTIFY JS-->
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
     <script>
-      
-      alertify.set('notifier','position', 'top-center');
       <?php 
+      
       if(isset($_SESSION['message'])) 
       { 
         ?>
+        alertify.set('notifier','position', 'top-right'); 
          alertify.success('<?= $_SESSION['message']; ?>');
          <?php 
           unset($_SESSION['message']);
@@ -24,337 +32,220 @@
     ?>
     </script>
 
-    
-    <script>
-    $(document).ready(function() {
-        $(".owl-carousel").owlCarousel({
-            loop: true,
-            margin: 10,
-            nav: true,
-            responsive: {
-                0: {
-                    items: 1 // 1 item for mobile
-                },
-                600: {
-                    items: 2 // 2 items for tablets
-                },
-                1000: {
-                    items: 3 // 3 items for desktop
-                }
-            }
-            
-        });
+<script>
+    function togglePassword() {
+      var passwordField = document.getElementById('exampleInputPassword1');
+      var passwordToggle = document.getElementById('password-toggle');
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        passwordToggle.src = 'admin-assets/img/view.png'; // Correct path to show password image
+      } else {
+        passwordField.type = 'password';
+        passwordToggle.src = 'admin-assets/img/close-eye.png'; // Correct path to hide password image
+      }
+    }
+  </script>
+
+<script>
+    function previewImage() {
+      const file = document.getElementById('image').files[0];
+      const preview = document.getElementById('imagePreview');
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.innerHTML = `<img src="${e.target.result}" alt="Image Preview" class="img-preview">`;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.innerHTML = '';
+      }
+    }
+
+    function validateForm() {
+      const requiredFields = document.querySelectorAll('input[required], textarea[required]');
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = '#dc3545';
+          isValid = false;
+        } else {
+          field.style.borderColor = '';
+        }
+      });
+
+      return isValid;
+    }
+  </script>
+
+<script>
+  function previewImage() {
+    const file = document.getElementById('image').files[0];
+    const preview = document.getElementById('imagePreview');
+    const reader = new FileReader();
+
+    reader.onloadend = function () {
+      preview.src = reader.result;
+      preview.style.display = 'block';
+    }
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = '';
+      preview.style.display = 'none';
+    }
+  }
+</script>
+
+<!-- JavaScript for Real-Time Date and Time -->
+<script>
+  function updateDateTime() {
+    const now = new Date();
+    const date = now.toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
+    const time = now.toLocaleTimeString('en-US', {
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+
+    document.getElementById('current-date').textContent = date;
+    document.getElementById('current-time').textContent = time;
+  }
+
+  setInterval(updateDateTime, 1000); // Update every second
+</script>
+
+
+<script>
+function updateBikeCategoryAndRates() {
+    var bikeSelect = document.getElementById("bikeName");
+    var selectedOption = bikeSelect.options[bikeSelect.selectedIndex];
+    var bikeCategoryInput = document.getElementById("bikeCategory");
+    
+    // Set the bike category based on selected bike
+    bikeCategoryInput.value = selectedOption.getAttribute('data-category');
+    
+    // Clear total if needed
+    document.getElementById("total").value = "";
+}
+
+function updateRates() {
+    calculateTotal();
+}
+
+function calculateTotal() {
+    var bikeSelect = document.getElementById("bikeName");
+    var selectedOption = bikeSelect.options[bikeSelect.selectedIndex];
+    var quantity = document.getElementById("quantity").value || 1; // Default to 1 if no quantity is provided
+    var rentType = document.getElementById("rentType").value;
+    var total = 0;
+
+    // Retrieve date and time values
+    var startDate = document.getElementById("startRentDate").value;
+    var endDate = document.getElementById("endRentDate").value;
+    var startTime = document.getElementById("startRentTimeHourly").value;
+    var endTime = document.getElementById("endRentTimeHourly").value;
+
+    if (rentType === "daily") {
+        var dailyRate = parseFloat(selectedOption.getAttribute('data-daily'));
+        
+        // Calculate the number of days between startDate and endDate
+        var date1 = new Date(startDate);
+        var date2 = new Date(endDate);
+        var timeDifference = date2.getTime() - date1.getTime();
+        var daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)); // Get total days
+
+        // Multiply by daysDifference and quantity
+        total = dailyRate * daysDifference * quantity;
+    } 
+    else if (rentType === "hourly") {
+        var hourlyRate = parseFloat(selectedOption.getAttribute('data-hourly'));
+        
+        // Calculate the number of hours between startTime and endTime
+        var start = new Date("1970-01-01T" + startTime);
+        var end = new Date("1970-01-01T" + endTime);
+        var timeDifference = end.getTime() - start.getTime();
+        var hoursDifference = Math.ceil(timeDifference / (1000 * 3600)); // Get total hours
+
+        // Multiply by hoursDifference and quantity
+        total = hourlyRate * hoursDifference * quantity;
+    }
+
+    // Display the total with two decimal points
+    document.getElementById("total").value = total.toFixed(2);
+}
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        events: 'fetch_bookings.php', // Ensure this path is correct
+        editable: false,
+        eventLimit: true,
+        eventRender: function(event, element) {
+            // Style based on status
+            if (event.status === 'confirmed') {
+                element.css('background-color', 'darkgreen'); // Green for confirmed
+            } else if (event.status === 'returned') {
+                element.css('background-color', 'gold'); // Gold for returned
+            } else if (event.status === 'pending') {
+                element.css('background-color', 'darkred'); // Dark red for pending
+            }
+        },
+        eventClick: function(event) {
+            if (event) {
+
+                // Start building modal content
+                var bookingDetails = `
+                    <strong>User ID:</strong> ${event.user_id}<br>
+                    <strong>Customer Name:</strong> ${event.customer_name}<br>
+                    <strong>Customer Email:</strong> ${event.customer_email}<br>
+                    <strong>Bike ID:</strong> ${event.bike_id}<br>
+                    <strong>Quantity:</strong> ${event.quantity}<br>
+                    <strong>Rate Type:</strong> ${event.rate_type}<br>
+                    <strong>Booking Date:</strong> ${moment(event.booking_date).format('MMMM Do, YYYY')}<br>
+                `;
+
+                // Check rate type and add appropriate fields
+                if (event.rate_type.toLowerCase() === 'hourly') {
+                    bookingDetails += `
+                        <strong>Pickup Time:</strong> ${formattedPickupTime}<br>
+                        <strong>Return Time:</strong> ${formattedReturnTime}<br>
+                    `;
+                }
+
+                // Create a badge for Status
+                var statusBadgeClass = event.status.toLowerCase(); // Ensure class name is in lower case
+                bookingDetails += `
+                    <strong>Booking ID:</strong> ${event.id}<br>
+                    <strong>Status:</strong> <span class="badge badge-${statusBadgeClass}">${event.status}</span><br>
+                `;
+
+                // Format pickup and return times
+                var formattedPickupTime = event.pickup_time ? moment(event.pickup_time).format('hh:mm A') : 'Not specified';
+                var formattedReturnTime = event.return_time ? moment(event.return_time).format('hh:mm A') : 'Not specified';
+
+                // Update the modal content
+                $('#eventDetails').html(bookingDetails);
+                $('#eventModal').modal('show'); // Show the modal
+            }
+        },
+        eventAfterAllRender: function(view) {
+            if ($('#calendar').find('.fc-event').length === 0) {
+                $('#calendar').append('<div>No bookings available</div>');
+            }
+        }
+    });
+});
+
     </script>
 
-<script>
-    // Select only the stars in the user rating section
-    const userStars = document.querySelectorAll('.rating i[data-value]');
-    const ratingText = document.getElementById('ratingText');
-    let selectedRating = 0;
-
-    userStars.forEach(star => {
-        // On hover, animate the stars and update the color
-        star.addEventListener('mouseover', () => {
-            const ratingValue = star.getAttribute('data-value');
-            userStars.forEach(s => {
-                s.classList.remove('text-warning');
-                s.classList.add('text-secondary');
-            });
-            for (let i = 0; i < ratingValue; i++) {
-                userStars[i].classList.add('text-warning');
-            }
-        });
-
-        // On click, save the rating value or reset if clicked twice
-        star.addEventListener('click', () => {
-            const ratingValue = star.getAttribute('data-value');
-
-            // Toggle the rating: if the same star is clicked again, reset the rating
-            if (selectedRating == ratingValue) {
-                selectedRating = 0;
-                document.getElementById('ratingValue').value = ""; // Clear hidden rating input
-                ratingText.innerText = "Select a rating";
-            } else {
-                selectedRating = ratingValue;
-                document.getElementById('ratingValue').value = ratingValue; // Set hidden rating input
-                ratingText.innerText = ratingValue + (ratingValue == 1 ? " Star" : " Stars");
-            }
-
-            // Update the stars visual after selection/reset
-            userStars.forEach(s => {
-                s.classList.remove('text-warning');
-                s.classList.add('text-secondary');
-            });
-            for (let i = 0; i < selectedRating; i++) {
-                userStars[i].classList.add('text-warning');
-            }
-        });
-
-        // Reset to saved rating when not hovering
-        star.addEventListener('mouseleave', () => {
-            userStars.forEach(s => {
-                s.classList.remove('text-warning');
-                s.classList.add('text-secondary');
-            });
-            for (let i = 0; i < selectedRating; i++) {
-                userStars[i].classList.add('text-warning');
-            }
-        });
-    });
-</script>
-
-
-
-<script>
-  document.getElementById('menuToggle').addEventListener('click', function (e) {
-    e.preventDefault();
-    var menuIcon = document.getElementById('menuIcon');
-    var closeIcon = document.getElementById('closeIcon');
-    var dropdownMenu = document.getElementById('dropdownMenu');
-
-    // Toggle visibility of the menu and close icons
-    menuIcon.classList.toggle('d-none');
-    closeIcon.classList.toggle('d-none');
-
-    // Toggle dropdown menu visibility
-    dropdownMenu.classList.toggle('dropdown-show');
-  });
-</script>
-
-<script>
-  function togglePassword() {
-      var passwordInput = document.getElementById("exampleInputPassword1");
-      var passwordToggle = document.getElementById("password-toggle");
-      if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          passwordToggle.src = "assets/img/view.png"; // Change to open eye icon
-      } else {
-          passwordInput.type = "password";
-          passwordToggle.src = "assets/img/close-eye.png"; // Change back to closed eye icon
-      }
-  }
-</script>
-
-<script>
-  function togglePassword1(inputId, toggleId) {
-      var passwordInput = document.getElementById(inputId);
-      var passwordToggle = document.getElementById(toggleId);
-      if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          passwordToggle.src = "assets/img/view.png"; // Change to open eye icon
-      } else {
-          passwordInput.type = "password";
-          passwordToggle.src = "assets/img/close-eye.png"; // Change back to closed eye icon
-      }
-  }
-</script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('profileImage').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                // Reset to default image if no file is selected
-                document.getElementById('previewImage').src = 'assets/img/profile.png';
-            }
-        });
-    });
-</script>
-
-<script>
-    document.getElementById('profileImage').addEventListener('change', function(event) {
-        const preview = document.getElementById('profilePicture');
-        const file = event.target.files[0];
-        
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
-
-<script>
-    // Get the button that deletes the account
-    var confirmDeleteButton = document.getElementById('confirmDeleteButton');
-
-    // When the user clicks the confirm button, submit the form
-    confirmDeleteButton.addEventListener('click', function() {
-        // Create a form for deleting the account
-        var deleteForm = document.createElement('form');
-        deleteForm.action = 'delete_account.php'; // Set the action to the delete account script
-        deleteForm.method = 'POST';
-        document.body.appendChild(deleteForm); // Append the form to the body
-        deleteForm.submit(); // Submit the form
-    });
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const rateTypeSelect = document.getElementById('rate_type');
-    const quantityInput = document.getElementById('quantity');
-    const quantityAlert = document.getElementById('quantityAlert');
-    const timeAlert = document.getElementById('timeAlert');
-    const pickupTimeContainer = document.getElementById('pickup_time_container');
-    const returnTimeContainer = document.getElementById('return_time_container');
-    const pickupTime = document.getElementById('pickup_time');
-    const returnTime = document.getElementById('return_time');
-    const bookingDate = document.getElementById('booking_date');
-    const bookingForm = document.getElementById('bookingForm');
-
-    // Hide alerts on load
-    hideAlert(quantityAlert);
-    hideAlert(timeAlert);
-
-    // Show/hide booking fields based on rate type
-    rateTypeSelect.addEventListener('change', showBookingFields);
-    showBookingFields(); // Call on load to set initial state
-
-    // Quantity increment and decrement logic
-    document.getElementById('decrementQty').addEventListener('click', function() {
-        let currentQty = parseInt(quantityInput.value);
-        if (currentQty > 1) {
-            quantityInput.value = currentQty - 1;
-            hideAlert(quantityAlert);
-        }
-    });
-
-    document.getElementById('incrementQty').addEventListener('click', function() {
-        let currentQty = parseInt(quantityInput.value);
-        let maxQty = parseInt(quantityInput.max);
-
-        if (currentQty < maxQty) {
-            quantityInput.value = currentQty + 1;
-            hideAlert(quantityAlert);
-        } else {
-            showAlert(quantityAlert, `Maximum available quantity is ${maxQty}`);
-        }
-    });
-
-    // Show or hide time selection based on rate type
-    function showBookingFields() {
-        hideAlert(quantityAlert);
-        hideAlert(timeAlert);
-
-        const isHourlyRate = rateTypeSelect.value === "<?= RATE_HOURLY; ?>";
-        pickupTimeContainer.style.display = isHourlyRate ? 'block' : 'none';
-        returnTimeContainer.style.display = isHourlyRate ? 'block' : 'none';
-
-        if (!isHourlyRate) {
-            // Remove required attributes when not visible
-            pickupTime.removeAttribute('required');
-            returnTime.removeAttribute('required');
-        } else {
-            // Set required attributes when visible
-            pickupTime.setAttribute('required', 'required');
-            returnTime.setAttribute('required', 'required');
-        }
-    }
-
-    // Convert time format to 24 hours
-    function convertTo24HourFormat(time) {
-        const [timeString, modifier] = time.split(" ");
-        let [hours, minutes] = timeString.split(":").map(Number);
-
-        if (modifier === "PM" && hours < 12) {
-            hours += 12;
-        } else if (modifier === "AM" && hours === 12) {
-            hours = 0;
-        }
-
-        return { hours, minutes };
-    }
-
-    // Validate pickup and return times
-    function validateTime() {
-        let isValid = true; // Flag to track validity
-
-        if (rateTypeSelect.value === "<?= RATE_HOURLY; ?>" && pickupTimeContainer.style.display !== 'none' && returnTimeContainer.style.display !== 'none') {
-            const pickupTimeValue = pickupTime.value;
-            const returnTimeValue = returnTime.value;
-            const bookingDateValue = bookingDate.value;
-
-            const { hours: pickupHours, minutes: pickupMinutes } = convertTo24HourFormat(pickupTimeValue);
-            const { hours: returnHours, minutes: returnMinutes } = convertTo24HourFormat(returnTimeValue);
-
-            const pickupDateTime = new Date(bookingDateValue);
-            pickupDateTime.setHours(pickupHours, pickupMinutes);
-
-            const returnDateTime = new Date(bookingDateValue);
-            returnDateTime.setHours(returnHours, returnMinutes);
-
-            // Validate pickup before return
-            if (pickupDateTime >= returnDateTime) {
-                showAlert(timeAlert, "Pickup time must be before return time.");
-                pickupTime.focus(); // Set focus to pickup time
-                isValid = false;
-            }
-        }
-
-        return isValid; // Return the validity flag
-    }
-
-    // Form submission handling
-    bookingForm.addEventListener('submit', function(event) {
-        if (rateTypeSelect.value === "<?= RATE_HOURLY; ?>" && !validateTime()) {
-            event.preventDefault(); // Prevent form submission if invalid
-        }
-    });
-
-    // Show alert function
-    function showAlert(alertElement, message) {
-        if (alertElement) {
-            alertElement.innerText = message;
-            alertElement.style.display = 'block';
-        }
-    }
-
-    // Hide alert function
-    function hideAlert(alertElement) {
-        if (alertElement) {
-            alertElement.style.display = 'none';
-        }
-    }
-});
-</script>
-
-<script>
-    // Function to check availability
-    function checkAvailability(event) {
-        const isAvailable = <?= json_encode($product['availability_status'] === 'Available'); ?>;
-        
-        if (!isAvailable) {
-            alert("Warning: This bike is currently not available and cannot be booked.");
-            event.preventDefault(); // Prevent form submission
-        } else {
-            console.log("Bike is available!");
-        }
-    }
-
-    // Disabling the button if the bike is not available
-    window.onload = function() {
-        const isAvailable = <?= json_encode($product['availability_status'] === 'Available'); ?>;
-        const checkAvailabilityButton = document.getElementById("checkAvailabilityButton");
-
-        if (!isAvailable) {
-            checkAvailabilityButton.disabled = true;
-            checkAvailabilityButton.style.opacity = "0.6"; // Optional styling to show button is disabled
-            checkAvailabilityButton.style.cursor = "not-allowed";
-        }
-    };
-
-</script>
-
-
-  </body>
+</body>
 </html>
