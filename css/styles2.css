@@ -1,0 +1,918 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'SF Pro Display', sans-serif;
+}
+
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display?styles=98774,98773,98770,98769');
+
+header {
+    padding: 0px 20px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shopping-bag img {
+    position: absolute;
+    top: 50px;
+    left: 120px;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    margin: 0 10px;   
+}
+
+.notif-circle {
+    position: absolute;
+    top: 45px;
+    left: 150px;
+    width: 26px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background-color: #F00;
+}
+
+.notif-circle p {
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    color: #FFF;
+    font-family: SF Pro Display;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.PCEasy img {
+    position: absolute;
+    top: 20px;
+    left: 950px;
+    width: 138px;
+    flex-shrink: 0;
+}
+
+.PCEasy h3 {
+    position: absolute;
+    top: 45px;
+    left: 1095px;
+    color: #121212;
+    font-family: SF Pro Display;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 86.836%; /* 30.393px */
+    letter-spacing: -1.75px;
+    text-transform: lowercase;
+}
+
+.PCEasyImg img {
+    position: absolute;
+    top: 25px;
+    left: 1205px;
+    width: 95px;
+    height: 90px;
+    flex-shrink: 0;
+}
+
+.horilines1 {
+    position: absolute;
+    top: 130px;
+    left: 0;
+    width: 1365px;
+    height: 1px;
+    flex-shrink: 0;
+    background: #ACACAC;
+}
+
+.vertilines {
+    position: absolute;
+    top: 828px;
+    width: 1396px;
+    height: 1px;
+    transform: rotate(-89.869deg);
+    flex-shrink: 0;
+    background: #ACACAC;
+}
+
+.item-details1 img {
+    position: absolute;
+    top: 160px;
+    left: 810px;
+    width: 105px;
+    height: 110px;
+    flex-shrink: 0;
+}
+
+.item-details1 h2 {
+    position: absolute;
+    top: 180px;
+    left: 940px;
+    width: 296px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.item-details1 h3 {
+    position: absolute;
+    top: 235px;
+    left: 940px;
+    width: 296px;
+    color: #474747;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.item-details2 p {
+    position: relative;
+    width: 100px;
+    top: 275px;
+    left: 820px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 2;
+    list-style: none;
+}
+
+.delivery h2 {
+    position: absolute;
+    top: 150px;
+    left: 135px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.country label {
+    position: absolute;
+    top: 190px;
+    left: 140px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.country select {
+    position: absolute;
+    top: 210px;
+    left: 140px;
+    width: 550px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #FFF;
+    color: #000;
+    font-family: SF Pro Text;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-indent: 5px;
+}
+
+.fn label {
+    position: absolute;
+    top: 270px;
+    left: 140px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.fn input {
+    position: absolute;
+    top: 292px;
+    left: 140px;
+    width: 265px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.ln label {
+    position: absolute;
+    top: 270px;
+    left: 420px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.ln input {
+    position: absolute;
+    top: 292px;
+    left: 420px;
+    width: 265px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.addline1 label {
+    position: absolute;
+    top: 345px;
+    left: 140px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.addline1 input{
+    position: absolute;
+    top: 367px;
+    left: 140px;
+    width: 265px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.addline1 p {
+    position: absolute;
+    top: 414px;
+    left: 140px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 9px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.addline2 label {
+    position: absolute;
+    top: 345px;
+    left: 420px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.addline2 input {
+    position: absolute;
+    top: 367px;
+    left: 420px;
+    width: 265px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.addline2 p {
+    position: absolute;
+    top: 414px;
+    left: 420px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 9px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.state-province label {
+    position: absolute;
+    top: 440px;
+    left: 140px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.state-province select {
+    position: absolute;
+    top: 463px;
+    left: 140px;
+    width: 265px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+
+.city-municipality label {
+    position: absolute;
+    top: 440px;
+    left: 420px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.city-municipality select {
+    position: absolute;
+    top: 463px;
+    left: 420px;
+    width: 265px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.postal label {
+    position: absolute;
+    top: 515px;
+    left: 140px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.postal input {
+    position: absolute;
+    top: 540px;
+    left: 140px;
+    width: 190px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.phone label {
+    position: absolute;
+    top: 515px;
+    left: 350px;
+    color: #727272;
+    font-family: SF Pro Text;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.phone input {
+    position: absolute;
+    top: 540px;
+    left: 350px;
+    width: 335px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 0.9px solid #41444B;
+    font-family: SF Pro Display;
+    font-size: 14px;
+    font-weight: 500;
+    text-indent: 5px;
+}
+
+.shipping-item h3 {
+    position: absolute;
+    top: 600px;
+    left: 135px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+   .shipping-item [type="radio"] {
+      display: none;
+    }
+
+    .shipping-item + .radio-item {
+      margin-top: 10px; /* Adjusted margin for spacing */
+    }
+
+    .shipping-item label {
+      display: block;
+      padding: 20px 60px;
+      background: #FFF;
+      border: 0.5px solid #7C7C7C;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 400;
+      width: 550px;
+      white-space: nowrap;
+      position: relative;
+      top: 555px;
+      left: 135px;
+    }
+
+    .free p {
+      position: absolute;
+      top: 665px;
+      left: 635px;
+      color: #727272;
+      font-family: 'SF Pro Display', sans-serif;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+
+    .pay p {
+      position: absolute;
+      top: 760px;
+      left: 610px;
+      color: #727272;
+      font-family: 'SF Pro Display', sans-serif;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+
+    .shipping-item label:after,
+    .shipping-item label:before {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .shipping-item label:after {
+      height: 20px;
+      width: 20px;
+      border: 2px solid #797979;
+      left: 20px;
+      top: calc(50% - 12px);
+    }
+
+    .shipping-item label:before {
+      background: #000;
+      height: 10px;
+      width: 10px;
+      left: 27px;
+      top: calc(50% - 5px);
+      transform: scale(5);
+      transition: .4s ease-in-out 0s;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .shipping-item [type="radio"]:checked ~ label {
+      border-color: #797979;
+    }
+
+    .shipping-item [type="radio"]:checked ~ label:before {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+.item-amount p {
+    position: relative;
+    width: 200px;
+    top: 10px;
+    left: 1100px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 2;
+    list-style: none;
+}
+
+.payment-item h3 {
+    position: absolute;
+    top: 850px;
+    left: 135px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.payment-item p {
+    position: absolute;
+    top: 885px;
+    left: 135px;
+    color: #7B7B7B;
+    font-family: SF Pro Text;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.payment-item [type="radio"]{
+    display: none;
+}
+
+.payment-choice + .radio-item2{
+    margin-top: 1px;
+}
+.payment-choice label{
+    display: block;
+    padding: 20px 60px;
+    background: #FFF;
+    border: 0.5px solid #7C7C7C;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 400;
+    width: 550px;
+    white-space: nowrap;
+    position: relative;
+    top: 555px;
+    left: 135px;
+}
+
+.payment-choice label:after,
+.payment-choice label:before{
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+
+.payment-choice label:after{
+    height: 20px;
+    width: 20px;
+    border:2px solid #797979;
+    left: 20px;
+    top: calc(50% - 12px);
+}
+.payment-choice label:before{
+    background: #000;
+    height: 10px;
+    width: 10px;
+    left: 27px;
+    top: calc(50% - 5px);
+    transform: scale(5);
+    transition: .4s ease-in-out 0s;
+    opacity: 0;
+    visibility: hidden;
+}
+.payment-choice [type="radio"]:checked ~ label{
+    border-color: #797979;
+}
+
+.payment-choice [type="radio"]:checked ~ label:before{
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.billing-item h3 {
+    position: absolute;
+    top: 1100px;
+    left: 135px;
+    color: #000;
+    font-family: SF Pro Display;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.billing-item [type="radio"]{
+    display: none;
+}
+
+.billing-choice + .radio-item2{
+    margin-top: 1px;
+}
+.billing-choice label{
+    display: block;
+    padding: 20px 60px;
+    background: #FFF;
+    border: 0.5px solid #7C7C7C;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 400;
+    width: 550px;
+    white-space: nowrap;
+    position: relative;
+    top: 620px;
+    left: 135px;
+}
+
+.billing-choice label:after,
+.billing-choice label:before{
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+
+.billing-choice label:after{
+    height: 20px;
+    width: 20px;
+    border:2px solid #797979;
+    left: 20px;
+    top: calc(50% - 12px);
+}
+.billing-choice label:before{
+    background: #000;
+    height: 10px;
+    width: 10px;
+    left: 27px;
+    top: calc(50% - 5px);
+    transform: scale(5);
+    transition: .4s ease-in-out 0s;
+    opacity: 0;
+    visibility: hidden;
+}
+.billing-choice [type="radio"]:checked ~ label{
+    border-color: #797979;
+}
+
+.billing-choice [type="radio"]:checked ~ label:before{
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.btn-pay button {
+    position: absolute;
+    top: 1340px;
+    left: 135px;
+    width: 555px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #000;
+    color: #FFF;
+    font-family: SF Pro Display;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    border: none;
+    cursor: pointer;
+}
+         .modal {
+            z-index: 1000; /* Set a higher z-index for the modal background */
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            overflow: auto;
+        }
+
+        .modal-checkmark {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            color: #28a745;
+            opacity: 0; /* Initially hidden */
+            animation: fadeIn 1s ease-in-out forwards; /* Animation */
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .loading-spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto; /* Center the loading spinner */
+            display: none; /* Initially hidden */
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+.horilines2 {
+    position: absolute;
+    top: 1430px;
+    left: 0;
+    width: 717px;
+    height: 1px;
+    flex-shrink: 0;
+    background: #ACACAC;
+}
+
+.refund p {
+    position: absolute;
+    top: 1470px;
+    left: 140px;
+    color: #313131;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration-line: underline;
+}
+
+.privacy p {
+    position: absolute;
+    top: 1470px;
+    left: 360px;
+    color: #313131;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration-line: underline;
+}
+
+.terms p {
+    position: absolute;
+    top: 1470px;
+    left: 560px;
+    color: #313131;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration-line: underline;
+}
+
+/*Modal*/
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.modal-dialog {
+    max-width: 400px; /* Adjust the maximum width as needed */
+    margin: 10% auto;
+}
+
+        .modal-checkmark {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4.5em;
+            color: #28a745;
+            opacity: 0; /* Initially hidden */
+            animation: fadeIn 1s ease-in-out forwards; /* Animation */
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 15px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content button {
+    width: 140px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #494949;
+    color: #F1F1F1;
+    border: none;
+    font-family: SF Pro Display;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    letter-spacing: 0.92px;
+}
+
+.modal-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+    margin-bottom: 0;
+}
+
+.modal-body {
+    color: green;
+    padding: 20px;
+}
+
+.modal-footer {
+    padding-top: 10px;
+    border-top: 1px solid #dee2e6;
+}
+        
+        .loading-spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto; /* Center the loading spinner */
+            display: none; /* Initially hidden */
+            z-index: 1;
+}
+        
+             @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }

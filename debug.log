@@ -1,0 +1,25 @@
+Array
+(
+    [bike_id] => 45
+    [booking_date] => 2024-10-15
+    [pickup_time] => 
+    [return_time] => 
+    [quantity] => 1
+    [total_amount] => 200
+    [customer_name] => Carl Steven Apuya
+    [customer_email] => apuyacarlsteven@gmail.com
+)
+POST Data: Array
+(
+    [bike_id] => 45
+    [booking_date] => 2024-10-15
+    [pickup_time] => 
+    [return_time] => 
+    [quantity] => 1
+    [total_amount] => 200
+    [customer_name] => Carl Steven Apuya
+    [customer_email] => apuyacarlsteven@gmail.com
+)
+Missing Data: 
+Bike ID is missing
+Payment Option is missing
